@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpTelegram", "SharpTelegram\SharpTelegram.csproj", "{6D677DFC-5C78-4DDB-B4EB-8499503A644C}"
 EndProject
@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B4C773
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpTelegram.Tests", "SharpTelegram.Tests\SharpTelegram.Tests.csproj", "{270D886C-BA72-49DC-8D91-E9E30286CF66}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02F9B57B-427C-4E96-977A-3939DCDD5E0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,8 +26,15 @@ Global
 		{6D677DFC-5C78-4DDB-B4EB-8499503A644C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D677DFC-5C78-4DDB-B4EB-8499503A644C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D677DFC-5C78-4DDB-B4EB-8499503A644C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{270D886C-BA72-49DC-8D91-E9E30286CF66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{270D886C-BA72-49DC-8D91-E9E30286CF66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{270D886C-BA72-49DC-8D91-E9E30286CF66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{270D886C-BA72-49DC-8D91-E9E30286CF66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{270D886C-BA72-49DC-8D91-E9E30286CF66} = {02F9B57B-427C-4E96-977A-3939DCDD5E0A}
 	EndGlobalSection
 EndGlobal
