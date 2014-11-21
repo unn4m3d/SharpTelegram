@@ -6,7 +6,6 @@
 
 using Moq;
 using NUnit.Framework;
-using SharpMTProto.Transport;
 
 namespace SharpTelegram.Tests
 {
