@@ -9,7 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpTelegram.Tests", "Shar
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02F9B57B-427C-4E96-977A-3939DCDD5E0A}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharpTelegram.Shared", "SharpTelegram.Shared\SharpTelegram.Shared.shproj", "{4CF8ABFF-E393-48A0-BB3A-A63BFBC223EC}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SharpTelegram.Shared\SharpTelegram.Shared.projitems*{6d677dfc-5c78-4ddb-b4eb-8499503a644c}*SharedItemsImports = 4
+		SharpTelegram.Shared\SharpTelegram.Shared.projitems*{4cf8abff-e393-48a0-bb3a-a63bfbc223ec}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
