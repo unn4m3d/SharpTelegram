@@ -24,9 +24,10 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="SharpTelegram\bin\$config$\SharpTelegram.dll" target="lib\portable-net45+netcore45+wp8+MonoAndroid1+MonoTouch1\" />
-    <file src="SharpTelegram\bin\$config$\SharpTelegram.pdb" target="lib\portable-net45+netcore45+wp8+MonoAndroid1+MonoTouch1\" />
-    <file src="SharpTelegram\bin\$config$\SharpTelegram.XML" target="lib\portable-net45+netcore45+wp8+MonoAndroid1+MonoTouch1\" />
-    <file src="SharpTelegram\**\*.cs" target="src\SharpTelegram\" exclude="**\obj\**" />
+    <file src="SharpTelegram.NET45\bin\$config$\SharpTelegram.dll" target="lib\net45" />
+    <file src="SharpTelegram.NET45\bin\$config$\SharpTelegram.pdb" target="lib\net45" />
+    <file src="SharpTelegram.NET45\bin\$config$\SharpTelegram.XML" target="lib\net45" />
+    <file src="SharpTelegram.NET45\**\*.cs" target="src\SharpTelegram\" />
+    <file src="SharpTelegram.Shared\**\*.cs" target="src\SharpTelegram\" />
   </files>
 </package>

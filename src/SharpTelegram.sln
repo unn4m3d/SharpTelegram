@@ -3,32 +3,32 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpTelegram", "SharpTelegram\SharpTelegram.csproj", "{6D677DFC-5C78-4DDB-B4EB-8499503A644C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpTelegram.Tests", "SharpTelegram.Tests\SharpTelegram.Tests.csproj", "{270D886C-BA72-49DC-8D91-E9E30286CF66}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02F9B57B-427C-4E96-977A-3939DCDD5E0A}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharpTelegram.Shared", "SharpTelegram.Shared\SharpTelegram.Shared.shproj", "{4CF8ABFF-E393-48A0-BB3A-A63BFBC223EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpTelegram.NET45", "SharpTelegram.NET45\SharpTelegram.NET45.csproj", "{FB87832F-48AC-4B43-B1D6-CB78A53DCF08}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		SharpTelegram.Shared\SharpTelegram.Shared.projitems*{6d677dfc-5c78-4ddb-b4eb-8499503a644c}*SharedItemsImports = 4
 		SharpTelegram.Shared\SharpTelegram.Shared.projitems*{4cf8abff-e393-48a0-bb3a-a63bfbc223ec}*SharedItemsImports = 13
+		SharpTelegram.Shared\SharpTelegram.Shared.projitems*{fb87832f-48ac-4b43-b1d6-cb78a53dcf08}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6D677DFC-5C78-4DDB-B4EB-8499503A644C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D677DFC-5C78-4DDB-B4EB-8499503A644C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D677DFC-5C78-4DDB-B4EB-8499503A644C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D677DFC-5C78-4DDB-B4EB-8499503A644C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{270D886C-BA72-49DC-8D91-E9E30286CF66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{270D886C-BA72-49DC-8D91-E9E30286CF66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{270D886C-BA72-49DC-8D91-E9E30286CF66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{270D886C-BA72-49DC-8D91-E9E30286CF66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB87832F-48AC-4B43-B1D6-CB78A53DCF08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB87832F-48AC-4B43-B1D6-CB78A53DCF08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB87832F-48AC-4B43-B1D6-CB78A53DCF08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB87832F-48AC-4B43-B1D6-CB78A53DCF08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

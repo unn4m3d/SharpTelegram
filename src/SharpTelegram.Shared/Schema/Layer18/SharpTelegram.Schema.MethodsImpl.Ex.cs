@@ -4,17 +4,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Catel.Reflection;
 using SharpMTProto;
 
 namespace SharpTelegram.Schema.Layer18
 {
+    using System.Reflection;
+
     public partial class TelegramAsyncMethods
     {
         partial void SetupRemoteProcedureCaller(IRemoteProcedureCaller remoteProcedureCaller)
         {
             remoteProcedureCaller.PrepareSerializersForAllTLObjectsInAssembly(
-                typeof (ITelegramAsyncMethods).GetAssemblyEx());
+                typeof (ITelegramAsyncMethods).GetTypeInfo().Assembly);
         }
     }
 }

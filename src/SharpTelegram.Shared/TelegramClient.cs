@@ -16,20 +16,20 @@ namespace SharpTelegram
     public class TelegramClient : IDisposable
     {
         private readonly TelegramAppInfo _appInfo;
-        private readonly ITransportConfig _transportConfig;
+        private readonly IClientTransportConfig _transportConfig;
         private Config _config;
-        private IMTProtoConnection _connection;
+        private IMTProtoClientConnection _connection;
         private bool _isDisposed;
         private ITelegramAsyncMethods _methods;
 
-        public TelegramClient(ITransportConfig transportConfig,
+        public TelegramClient(IClientTransportConfig transportConfig,
             ConnectionConfig connectionConfig,
             TelegramAppInfo appInfo,
-            IMTProtoBuilder builder = null)
+            IMTProtoClientBuilder builder = null)
         {
             if (builder == null)
             {
-                builder = MTProtoBuilder.Default;
+                builder = MTProtoClientBuilder.Default;
             }
 
             _transportConfig = transportConfig;
@@ -39,9 +39,9 @@ namespace SharpTelegram
             _methods = new TelegramAsyncMethods(_connection);
         }
 
-        public MTProtoConnectionState State
+        public ClientTransportState State
         {
-            get { return _connection.State; }
+            get { return _connection.Transport.State; }
         }
 
         public ITelegramAsyncMethods Methods
@@ -49,16 +49,16 @@ namespace SharpTelegram
             get { return _methods; }
         }
 
-        public TimeSpan DefaultRpcTimeout
+        public TimeSpan DefaultResponseTimeout
         {
-            get { return _connection.DefaultRpcTimeout; }
-            set { _connection.DefaultRpcTimeout = value; }
+            get { return _connection.DefaultResponseTimeout; }
+            set { _connection.DefaultResponseTimeout = value; }
         }
 
-        public TimeSpan DefaultConnectTimeout
+        public TimeSpan ConnectTimeout
         {
-            get { return _connection.DefaultConnectTimeout; }
-            set { _connection.DefaultConnectTimeout = value; }
+            get { return _connection.Transport.ConnectTimeout; }
+            set { _connection.Transport.ConnectTimeout = value; }
         }
 
         public bool IsConnected
@@ -71,14 +71,14 @@ namespace SharpTelegram
             Dispose(true);
         }
 
-        public async Task<MTProtoConnectResult> Connect()
+        public async Task<TransportConnectResult> Connect()
         {
             ThrowIfDisposed();
             if (IsConnected)
             {
-                return MTProtoConnectResult.Success;
+                return TransportConnectResult.Success;
             }
-            MTProtoConnectResult result = await _connection.Connect();
+            TransportConnectResult result = await _connection.ConnectAsync();
 
             await InitConnectionAndGetConfig();
 
@@ -107,10 +107,10 @@ namespace SharpTelegram
         public Task Disconnect()
         {
             ThrowIfDisposed();
-            return _connection.Disconnect();
+            return _connection.DisconnectAsync();
         }
 
-        protected virtual void Dispose(bool isDisposing)
+        protected virtual async void Dispose(bool isDisposing)
         {
             if (_isDisposed)
             {
@@ -122,7 +122,7 @@ namespace SharpTelegram
             {
                 if (_connection != null)
                 {
-                    _connection.Disconnect();
+                    await _connection.DisconnectAsync();
                     _connection.Dispose();
                 }
                 _methods = null;

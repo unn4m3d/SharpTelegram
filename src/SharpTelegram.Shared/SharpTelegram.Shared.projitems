@@ -6,7 +6,7 @@
     <SharedGUID>4cf8abff-e393-48a0-bb3a-a63bfbc223ec</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>SharpTelegram.Shared</Import_RootNamespace>
+    <Import_RootNamespace>SharpTelegram</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Schema\Layer18\SharpTelegram.Schema.cs" />
