@@ -5,7 +5,6 @@
     $build_dir = Split-Path $psake.build_script_file
     $code_dir = "$build_dir\..\src"
     $solution_path = "$code_dir\$solution_name.sln"
-    $assembly_info_path = "$code_dir\CommonAssemblyInfo.cs"
     $nuspec_file = "$code_dir\$solution_name.nuspec"
 }
 
@@ -15,8 +14,8 @@ Task Default -depends RebuildAndPack
 
 task RebuildAndPack -Depends Rebuild, PackNuGetPackages
 
-task RestoreNuGetPackages {
-    exec { nuget.exe restore $solution_path }
+Task RestoreNuGetPackages {
+    Exec { nuget.exe restore $solution_path }
 }
 
 Task ValidateConfig {
@@ -24,7 +23,7 @@ Task ValidateConfig {
     Assert ( 'Debug','Release' -contains $config) -failureMessage "Invalid config: $config; Valid values are 'Debug' and 'Release'."
 }
 
-Task Build -depends ValidateConfig, RestoreNuGetPackages, UpdateAssemblyInfo -description "Builds outdated artifacts." {
+Task Build -depends ValidateConfig, RestoreNuGetPackages -description "Builds outdated artifacts." {
     Write-Host "Building soulution..." -ForegroundColor Green
     Exec { msbuild "$solution_path" /t:Build /p:Configuration=$config /v:quiet }
 }
@@ -36,7 +35,7 @@ Task Clean -depends ValidateConfig -description "Deletes all build artifacts." {
 
 Task Rebuild -depends Clean,Build -description "Rebuilds all artifacts from source."
 
-task PackNuGetPackages -depends Rebuild {
+Task PackNuGetPackages -depends Rebuild {
     Write-Host "Creating NuGet packages" -ForegroundColor Green
     $packages_dir = "$build_dir\output\$config\"
     if (Test-Path $packages_dir)
@@ -56,9 +55,5 @@ task PackNuGetPackages -depends Rebuild {
         Write-Host "NuGet Version: $version"
     }
 
-    exec { nuget.exe pack $nuspec_file -Version $version -Prop config=$config -Symbols -Verbosity detailed -OutputDirectory "$packages_dir" }
-}
-
-task UpdateAssemblyInfo {
-    exec { gitversion.exe /updateassemblyinfo true }
+    Exec { nuget.exe pack $nuspec_file -Version $version -Prop config=$config -Symbols -Verbosity detailed -OutputDirectory "$packages_dir" }
 }
