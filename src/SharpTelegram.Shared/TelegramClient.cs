@@ -39,6 +39,11 @@ namespace SharpTelegram
             _methods = new TelegramAsyncMethods(_connection);
         }
 
+        public IMTProtoClientConnection Connection
+        {
+            get { return _connection; }
+        }
+
         public ClientTransportState State
         {
             get { return _connection.Transport.State; }
