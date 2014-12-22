@@ -5,13 +5,6 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpTelegram", "SharpTelegram\SharpTelegram.csproj", "{6D677DFC-5C78-4DDB-B4EB-8499503A644C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B4C77322-1708-40B5-A290-E1D9D79A69A3}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpTelegram.Tests", "SharpTelegram.Tests\SharpTelegram.Tests.csproj", "{270D886C-BA72-49DC-8D91-E9E30286CF66}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02F9B57B-427C-4E96-977A-3939DCDD5E0A}"
