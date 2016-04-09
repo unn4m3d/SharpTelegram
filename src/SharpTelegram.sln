@@ -1,20 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpTelegram", "SharpTelegram\SharpTelegram.csproj", "{6D677DFC-5C78-4DDB-B4EB-8499503A644C}"
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpTelegram", "SharpTelegram\SharpTelegram.csproj", "{FA02B925-8A08-4910-AE89-26DF61BEA66A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B4C77322-1708-40B5-A290-E1D9D79A69A3}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpMTProto", "SharpMTProto\SharpMTProto.csproj", "{8C911583-6E03-42CB-B685-AE13B2407E73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpTelegram.Tests", "SharpTelegram.Tests\SharpTelegram.Tests.csproj", "{270D886C-BA72-49DC-8D91-E9E30286CF66}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02F9B57B-427C-4E96-977A-3939DCDD5E0A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpMTProto.Shared", "SharpMTProto.Shared\SharpMTProto.Shared.csproj", "{353AE98D-A1C1-4C33-A89A-A34DE23CCB33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,19 +13,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6D677DFC-5C78-4DDB-B4EB-8499503A644C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D677DFC-5C78-4DDB-B4EB-8499503A644C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D677DFC-5C78-4DDB-B4EB-8499503A644C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D677DFC-5C78-4DDB-B4EB-8499503A644C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{270D886C-BA72-49DC-8D91-E9E30286CF66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{270D886C-BA72-49DC-8D91-E9E30286CF66}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{270D886C-BA72-49DC-8D91-E9E30286CF66}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{270D886C-BA72-49DC-8D91-E9E30286CF66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA02B925-8A08-4910-AE89-26DF61BEA66A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA02B925-8A08-4910-AE89-26DF61BEA66A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA02B925-8A08-4910-AE89-26DF61BEA66A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA02B925-8A08-4910-AE89-26DF61BEA66A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C911583-6E03-42CB-B685-AE13B2407E73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C911583-6E03-42CB-B685-AE13B2407E73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C911583-6E03-42CB-B685-AE13B2407E73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C911583-6E03-42CB-B685-AE13B2407E73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{353AE98D-A1C1-4C33-A89A-A34DE23CCB33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{353AE98D-A1C1-4C33-A89A-A34DE23CCB33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{353AE98D-A1C1-4C33-A89A-A34DE23CCB33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{353AE98D-A1C1-4C33-A89A-A34DE23CCB33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{270D886C-BA72-49DC-8D91-E9E30286CF66} = {02F9B57B-427C-4E96-977A-3939DCDD5E0A}
 	EndGlobalSection
 EndGlobal

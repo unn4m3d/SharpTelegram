@@ -1,0 +1,1266 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SharpTL</name>
+    </assembly>
+    <members>
+        <member name="T:SharpTL.TLSerializationException">
+            <summary>
+                TL serialization exception.
+            </summary>
+        </member>
+        <member name="T:SharpTL.InvalidTLConstructorNumberException">
+            <summary>
+                Invalid TL constructor number exception.
+            </summary>
+        </member>
+        <member name="T:SharpTL.InvalidTLSchemaException">
+            <summary>
+                Invalid TL-schema exception.
+            </summary>
+        </member>
+        <member name="T:SharpTL.TLSerializerNotFoundException">
+            <summary>
+                TL serializer not found exception.
+            </summary>
+        </member>
+        <member name="T:SharpTL.ITLSingleConstructorSerializer">
+            <summary>
+            Interface of a TL serializer which supports only single constructor.
+            </summary>
+        </member>
+        <member name="T:SharpTL.ITLSerializer">
+            <summary>
+            Interface of a TL serializer.
+            </summary>
+        </member>
+        <member name="M:SharpTL.ITLSerializer.Write(System.Object,SharpTL.TLSerializationContext,System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Serializes an object.
+            </summary>
+            <param name="obj">Object to be serialized.</param>
+            <param name="context">Serialization context.</param>
+            <param name="modeOverride">Serialization mode override.</param>
+        </member>
+        <member name="M:SharpTL.ITLSerializer.Read(SharpTL.TLSerializationContext,System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+            Deserialize an object.
+            </summary>
+            <param name="context">Serialization context.</param>
+            <param name="modeOverride">Serialization mode override.</param>
+            <returns></returns>
+        </member>
+        <member name="P:SharpTL.ITLSerializer.SupportedType">
+            <summary>
+            Supported type.
+            </summary>
+        </member>
+        <member name="P:SharpTL.ITLSingleConstructorSerializer.ConstructorNumber">
+            <summary>
+            Constructor number.
+            </summary>
+        </member>
+        <member name="T:SharpTL.ITLMultiConstructorSerializer">
+            <summary>
+            Interface of a TL serializer which supports miltiple constructors.
+            </summary>
+        </member>
+        <member name="P:SharpTL.ITLMultiConstructorSerializer.ConstructorNumbers">
+            <summary>
+            Constructor numbers.
+            </summary>
+        </member>
+        <member name="T:SharpTL.Annotations.CanBeNullAttribute">
+            <summary>
+            Indicates that the value of the marked element could be <c>null</c> sometimes,
+            so the check for <c>null</c> is necessary before its usage
+            </summary>
+            <example><code>
+            [CanBeNull] public object Test() { return null; }
+            public void UseTest() {
+              var p = Test();
+              var s = p.ToString(); // Warning: Possible 'System.NullReferenceException'
+            }
+            </code></example>
+        </member>
+        <member name="T:SharpTL.Annotations.NotNullAttribute">
+            <summary>
+            Indicates that the value of the marked element could never be <c>null</c>
+            </summary>
+            <example><code>
+            [NotNull] public object Foo() {
+              return null; // Warning: Possible 'null' assignment
+            }
+            </code></example>
+        </member>
+        <member name="T:SharpTL.Annotations.StringFormatMethodAttribute">
+            <summary>
+            Indicates that the marked method builds string by format pattern and (optional) arguments.
+            Parameter, which contains format string, should be given in constructor. The format string
+            should be in <see cref="M:System.String.Format(System.IFormatProvider,System.String,System.Object[])"/>-like form
+            </summary>
+            <example><code>
+            [StringFormatMethod("message")]
+            public void ShowError(string message, params object[] args) { /* do something */ }
+            public void Foo() {
+              ShowError("Failed: {0}"); // Warning: Non-existing argument in format string
+            }
+            </code></example>
+        </member>
+        <member name="M:SharpTL.Annotations.StringFormatMethodAttribute.#ctor(System.String)">
+            <param name="formatParameterName">
+            Specifies which parameter of an annotated method should be treated as format-string
+            </param>
+        </member>
+        <member name="T:SharpTL.Annotations.InvokerParameterNameAttribute">
+            <summary>
+            Indicates that the function argument should be string literal and match one
+            of the parameters of the caller function. For example, ReSharper annotates
+            the parameter of <see cref="T:System.ArgumentNullException"/>
+            </summary>
+            <example><code>
+            public void Foo(string param) {
+              if (param == null)
+                throw new ArgumentNullException("par"); // Warning: Cannot resolve symbol
+            }
+            </code></example>
+        </member>
+        <member name="T:SharpTL.Annotations.NotifyPropertyChangedInvocatorAttribute">
+             <summary>
+             Indicates that the method is contained in a type that implements
+             <see cref="T:System.ComponentModel.INotifyPropertyChanged"/> interface
+             and this method is used to notify that some property value changed
+             </summary>
+             <remarks>
+             The method should be non-static and conform to one of the supported signatures:
+             <list>
+             <item><c>NotifyChanged(string)</c></item>
+             <item><c>NotifyChanged(params string[])</c></item>
+             <item><c>NotifyChanged{T}(Expression{Func{T}})</c></item>
+             <item><c>NotifyChanged{T,U}(Expression{Func{T,U}})</c></item>
+             <item><c>SetProperty{T}(ref T, T, string)</c></item>
+             </list>
+             </remarks>
+             <example><code>
+             public class Foo : INotifyPropertyChanged {
+               public event PropertyChangedEventHandler PropertyChanged;
+               [NotifyPropertyChangedInvocator]
+               protected virtual void NotifyChanged(string propertyName) { ... }
+            
+               private string _name;
+               public string Name {
+                 get { return _name; }
+                 set { _name = value; NotifyChanged("LastName"); /* Warning */ }
+               }
+             }
+             </code>
+             Examples of generated notifications:
+             <list>
+             <item><c>NotifyChanged("Property")</c></item>
+             <item><c>NotifyChanged(() =&gt; Property)</c></item>
+             <item><c>NotifyChanged((VM x) =&gt; x.Property)</c></item>
+             <item><c>SetProperty(ref myField, value, "Property")</c></item>
+             </list>
+             </example>
+        </member>
+        <member name="T:SharpTL.Annotations.ContractAnnotationAttribute">
+            <summary>
+            Describes dependency between method input and output
+            </summary>
+            <syntax>
+            <p>Function Definition Table syntax:</p>
+            <list>
+            <item>FDT      ::= FDTRow [;FDTRow]*</item>
+            <item>FDTRow   ::= Input =&gt; Output | Output &lt;= Input</item>
+            <item>Input    ::= ParameterName: Value [, Input]*</item>
+            <item>Output   ::= [ParameterName: Value]* {halt|stop|void|nothing|Value}</item>
+            <item>Value    ::= true | false | null | notnull | canbenull</item>
+            </list>
+            If method has single input parameter, it's name could be omitted.<br/>
+            Using <c>halt</c> (or <c>void</c>/<c>nothing</c>, which is the same)
+            for method output means that the methos doesn't return normally.<br/>
+            <c>canbenull</c> annotation is only applicable for output parameters.<br/>
+            You can use multiple <c>[ContractAnnotation]</c> for each FDT row,
+            or use single attribute with rows separated by semicolon.<br/>
+            </syntax>
+            <examples><list>
+            <item><code>
+            [ContractAnnotation("=> halt")]
+            public void TerminationMethod()
+            </code></item>
+            <item><code>
+            [ContractAnnotation("halt &lt;= condition: false")]
+            public void Assert(bool condition, string text) // regular assertion method
+            </code></item>
+            <item><code>
+            [ContractAnnotation("s:null => true")]
+            public bool IsNullOrEmpty(string s) // string.IsNullOrEmpty()
+            </code></item>
+            <item><code>
+            // A method that returns null if the parameter is null, and not null if the parameter is not null
+            [ContractAnnotation("null => null; notnull => notnull")]
+            public object Transform(object data) 
+            </code></item>
+            <item><code>
+            [ContractAnnotation("s:null=>false; =>true,result:notnull; =>false, result:null")]
+            public bool TryParse(string s, out Person result)
+            </code></item>
+            </list></examples>
+        </member>
+        <member name="T:SharpTL.Annotations.LocalizationRequiredAttribute">
+            <summary>
+            Indicates that marked element should be localized or not
+            </summary>
+            <example><code>
+            [LocalizationRequiredAttribute(true)]
+            public class Foo {
+              private string str = "my string"; // Warning: Localizable string
+            }
+            </code></example>
+        </member>
+        <member name="T:SharpTL.Annotations.CannotApplyEqualityOperatorAttribute">
+            <summary>
+            Indicates that the value of the marked type (or its derivatives)
+            cannot be compared using '==' or '!=' operators and <c>Equals()</c>
+            should be used instead. However, using '==' or '!=' for comparison
+            with <c>null</c> is always permitted.
+            </summary>
+            <example><code>
+            [CannotApplyEqualityOperator]
+            class NoEquality { }
+            class UsesNoEquality {
+              public void Test() {
+                var ca1 = new NoEquality();
+                var ca2 = new NoEquality();
+                if (ca1 != null) { // OK
+                  bool condition = ca1 == ca2; // Warning
+                }
+              }
+            }
+            </code></example>
+        </member>
+        <member name="T:SharpTL.Annotations.BaseTypeRequiredAttribute">
+            <summary>
+            When applied to a target attribute, specifies a requirement for any type marked
+            with the target attribute to implement or inherit specific type or types.
+            </summary>
+            <example><code>
+            [BaseTypeRequired(typeof(IComponent)] // Specify requirement
+            public class ComponentAttribute : Attribute { }
+            [Component] // ComponentAttribute requires implementing IComponent interface
+            public class MyComponent : IComponent { }
+            </code></example>
+        </member>
+        <member name="T:SharpTL.Annotations.UsedImplicitlyAttribute">
+            <summary>
+            Indicates that the marked symbol is used implicitly
+            (e.g. via reflection, in external library), so this symbol
+            will not be marked as unused (as well as by other usage inspections)
+            </summary>
+        </member>
+        <member name="T:SharpTL.Annotations.MeansImplicitUseAttribute">
+            <summary>
+            Should be used on attributes and causes ReSharper
+            to not mark symbols marked with such attributes as unused
+            (as well as by other usage inspections)
+            </summary>
+        </member>
+        <member name="F:SharpTL.Annotations.ImplicitUseKindFlags.Access">
+            <summary>Only entity marked with attribute considered used</summary>
+        </member>
+        <member name="F:SharpTL.Annotations.ImplicitUseKindFlags.Assign">
+            <summary>Indicates implicit assignment to a member</summary>
+        </member>
+        <member name="F:SharpTL.Annotations.ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature">
+            <summary>
+            Indicates implicit instantiation of a type with fixed constructor signature.
+            That means any unused constructor parameters won't be reported as such.
+            </summary>
+        </member>
+        <member name="F:SharpTL.Annotations.ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature">
+            <summary>Indicates implicit instantiation of a type</summary>
+        </member>
+        <member name="T:SharpTL.Annotations.ImplicitUseTargetFlags">
+            <summary>
+            Specify what is considered used implicitly
+            when marked with <see cref="T:SharpTL.Annotations.MeansImplicitUseAttribute"/>
+            or <see cref="T:SharpTL.Annotations.UsedImplicitlyAttribute"/>
+            </summary>
+        </member>
+        <member name="F:SharpTL.Annotations.ImplicitUseTargetFlags.Members">
+            <summary>Members of entity marked with attribute are considered used</summary>
+        </member>
+        <member name="F:SharpTL.Annotations.ImplicitUseTargetFlags.WithMembers">
+            <summary>Entity marked with attribute and all its members considered used</summary>
+        </member>
+        <member name="T:SharpTL.Annotations.PublicAPIAttribute">
+            <summary>
+            This attribute is intended to mark publicly available API
+            which should not be removed and so is treated as used
+            </summary>
+        </member>
+        <member name="T:SharpTL.Annotations.InstantHandleAttribute">
+            <summary>
+            Tells code analysis engine if the parameter is completely handled
+            when the invoked method is on stack. If the parameter is a delegate,
+            indicates that delegate is executed while the method is executed.
+            If the parameter is an enumerable, indicates that it is enumerated
+            while the method is executed
+            </summary>
+        </member>
+        <member name="T:SharpTL.Annotations.PureAttribute">
+            <summary>
+            Indicates that a method does not make any observable state changes.
+            The same as <c>System.Diagnostics.Contracts.PureAttribute</c>
+            </summary>
+            <example><code>
+            [Pure] private int Multiply(int x, int y) { return x * y; }
+            public void Foo() {
+              const int a = 2, b = 2;
+              Multiply(a, b); // Waring: Return value of pure method is not used
+            }
+            </code></example>
+        </member>
+        <member name="T:SharpTL.Annotations.PathReferenceAttribute">
+            <summary>
+            Indicates that a parameter is a path to a file or a folder
+            within a web project. Path can be relative or absolute,
+            starting from web root (~)
+            </summary>
+        </member>
+        <member name="T:SharpTL.Annotations.AspMvcActionAttribute">
+            <summary>
+            ASP.NET MVC attribute. If applied to a parameter, indicates that the parameter
+            is an MVC action. If applied to a method, the MVC action name is calculated
+            implicitly from the context. Use this attribute for custom wrappers similar to
+            <c>System.Web.Mvc.Html.ChildActionExtensions.RenderAction(HtmlHelper, String)</c>
+            </summary>
+        </member>
+        <member name="T:SharpTL.Annotations.AspMvcAreaAttribute">
+            <summary>
+            ASP.NET MVC attribute. Indicates that a parameter is an MVC area.
+            Use this attribute for custom wrappers similar to
+            <c>System.Web.Mvc.Html.ChildActionExtensions.RenderAction(HtmlHelper, String)</c>
+            </summary>
+        </member>
+        <member name="T:SharpTL.Annotations.AspMvcControllerAttribute">
+            <summary>
+            ASP.NET MVC attribute. If applied to a parameter, indicates that
+            the parameter is an MVC controller. If applied to a method,
+            the MVC controller name is calculated implicitly from the context.
+            Use this attribute for custom wrappers similar to 
+            <c>System.Web.Mvc.Html.ChildActionExtensions.RenderAction(HtmlHelper, String, String)</c>
+            </summary>
+        </member>
+        <member name="T:SharpTL.Annotations.AspMvcMasterAttribute">
+            <summary>
+            ASP.NET MVC attribute. Indicates that a parameter is an MVC Master.
+            Use this attribute for custom wrappers similar to
+            <c>System.Web.Mvc.Controller.View(String, String)</c>
+            </summary>
+        </member>
+        <member name="T:SharpTL.Annotations.AspMvcModelTypeAttribute">
+            <summary>
+            ASP.NET MVC attribute. Indicates that a parameter is an MVC model type.
+            Use this attribute for custom wrappers similar to
+            <c>System.Web.Mvc.Controller.View(String, Object)</c>
+            </summary>
+        </member>
+        <member name="T:SharpTL.Annotations.AspMvcPartialViewAttribute">
+            <summary>
+            ASP.NET MVC attribute. If applied to a parameter, indicates that
+            the parameter is an MVC partial view. If applied to a method,
+            the MVC partial view name is calculated implicitly from the context.
+            Use this attribute for custom wrappers similar to
+            <c>System.Web.Mvc.Html.RenderPartialExtensions.RenderPartial(HtmlHelper, String)</c>
+            </summary>
+        </member>
+        <member name="T:SharpTL.Annotations.AspMvcSupressViewErrorAttribute">
+            <summary>
+            ASP.NET MVC attribute. Allows disabling all inspections
+            for MVC views within a class or a method.
+            </summary>
+        </member>
+        <member name="T:SharpTL.Annotations.AspMvcDisplayTemplateAttribute">
+            <summary>
+            ASP.NET MVC attribute. Indicates that a parameter is an MVC display template.
+            Use this attribute for custom wrappers similar to 
+            <c>System.Web.Mvc.Html.DisplayExtensions.DisplayForModel(HtmlHelper, String)</c>
+            </summary>
+        </member>
+        <member name="T:SharpTL.Annotations.AspMvcEditorTemplateAttribute">
+            <summary>
+            ASP.NET MVC attribute. Indicates that a parameter is an MVC editor template.
+            Use this attribute for custom wrappers similar to
+            <c>System.Web.Mvc.Html.EditorExtensions.EditorForModel(HtmlHelper, String)</c>
+            </summary>
+        </member>
+        <member name="T:SharpTL.Annotations.AspMvcTemplateAttribute">
+            <summary>
+            ASP.NET MVC attribute. Indicates that a parameter is an MVC template.
+            Use this attribute for custom wrappers similar to
+            <c>System.ComponentModel.DataAnnotations.UIHintAttribute(System.String)</c>
+            </summary>
+        </member>
+        <member name="T:SharpTL.Annotations.AspMvcViewAttribute">
+            <summary>
+            ASP.NET MVC attribute. If applied to a parameter, indicates that the parameter
+            is an MVC view. If applied to a method, the MVC view name is calculated implicitly
+            from the context. Use this attribute for custom wrappers similar to
+            <c>System.Web.Mvc.Controller.View(Object)</c>
+            </summary>
+        </member>
+        <member name="T:SharpTL.Annotations.AspMvcActionSelectorAttribute">
+            <summary>
+            ASP.NET MVC attribute. When applied to a parameter of an attribute,
+            indicates that this parameter is an MVC action name
+            </summary>
+            <example><code>
+            [ActionName("Foo")]
+            public ActionResult Login(string returnUrl) {
+              ViewBag.ReturnUrl = Url.Action("Foo"); // OK
+              return RedirectToAction("Bar"); // Error: Cannot resolve action
+            }
+            </code></example>
+        </member>
+        <member name="T:SharpTL.Annotations.RazorSectionAttribute">
+            <summary>
+            Razor attribute. Indicates that a parameter or a method is a Razor section.
+            Use this attribute for custom wrappers similar to 
+            <c>System.Web.WebPages.WebPageBase.RenderSection(String)</c>
+            </summary>
+        </member>
+        <member name="T:SharpTL.Serializers.BuiltIn">
+            <summary>
+                Built-in stuff.
+            </summary>
+        </member>
+        <member name="P:SharpTL.Serializers.BuiltIn.BaseTypeSerializers">
+            <summary>
+                Built-in base type serializers.
+            </summary>
+        </member>
+        <member name="P:SharpTL.Serializers.BuiltIn.DurovBaseTypeSerializers">
+            <summary>
+                Built-in base type serializers in Durov mode.
+            </summary>
+        </member>
+        <member name="T:SharpTL.Serializers.Int128Serializer">
+            <summary>
+                Serializer for 128-bit integer.
+            </summary>
+        </member>
+        <member name="T:SharpTL.Serializers.TLBareTypeSerializerBase">
+            <summary>
+                Base serializer for TL bare types.
+            </summary>
+        </member>
+        <member name="T:SharpTL.Serializers.TLSerializerBase">
+            <summary>
+                Base serializer for TL types.
+            </summary>
+        </member>
+        <member name="M:SharpTL.Serializers.TLSerializerBase.Write(System.Object,SharpTL.TLSerializationContext,System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Base serializer writes only header with type id. Then calls <see cref="M:SharpTL.Serializers.TLSerializerBase.WriteBody(System.Object,SharpTL.TLSerializationContext)"/>.
+            </summary>
+            <param name="obj">Object to be serialized.</param>
+            <param name="context">Serialization context.</param>
+            <param name="modeOverride">Override of default type serialization mode.</param>
+        </member>
+        <member name="M:SharpTL.Serializers.TLSerializerBase.ReadAndCheckConstructorNumber(SharpTL.TLSerializationContext,System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Reads and checks constructor number.
+            </summary>
+            <param name="context">Context.</param>
+            <param name="modeOverride">Mode override.</param>
+            <exception cref="T:SharpTL.InvalidTLConstructorNumberException">When actual constructor number is not as expected.</exception>
+        </member>
+        <member name="M:SharpTL.Serializers.TLSerializerBase.WriteHeader(SharpTL.TLSerializationContext,System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Writes a header with constructor number.
+            </summary>
+            <param name="context">Serialization context.</param>
+            <param name="modeOverride">Serialization mode override.</param>
+        </member>
+        <member name="M:SharpTL.Serializers.TLSerializerBase.ReadBody(SharpTL.TLSerializationContext)">
+            <summary>
+                Reads a body.
+            </summary>
+            <param name="context">Serialization context.</param>
+            <returns>Body of an object.</returns>
+        </member>
+        <member name="M:SharpTL.Serializers.TLSerializerBase.WriteBody(System.Object,SharpTL.TLSerializationContext)">
+            <summary>
+                Write a body.
+            </summary>
+            <param name="obj">Object to be serialized.</param>
+            <param name="context">Serialization context.</param>
+        </member>
+        <member name="P:SharpTL.Serializers.TLSerializerBase.SerializationMode">
+            <summary>
+                Serialization mode.
+            </summary>
+        </member>
+        <member name="T:SharpTL.Serializers.Int256Serializer">
+            <summary>
+                Serializer for 256-bit integer.
+            </summary>
+        </member>
+        <member name="T:SharpTL.ITLVectorSerializer">
+            <summary>
+                Interface for TL vector serializer.
+            </summary>
+        </member>
+        <member name="M:SharpTL.ITLVectorSerializer.Write(System.Object,SharpTL.TLSerializationContext,System.Nullable{SharpTL.TLSerializationMode},System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Writes vector to the serialization context.
+            </summary>
+            <param name="vector">Vector.</param>
+            <param name="context">Serialization context.</param>
+            <param name="modeOverride">Serialization mode override.</param>
+            <param name="itemsModeOverride">Items serialization mode override.</param>
+        </member>
+        <member name="M:SharpTL.ITLVectorSerializer.Read(SharpTL.TLSerializationContext,System.Nullable{SharpTL.TLSerializationMode},System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Writes vector to the serialization context.
+            </summary>
+            <param name="context">Serialization context.</param>
+            <param name="modeOverride">Serialization mode override.</param>
+            <param name="itemsModeOverride">Items serialization mode override.</param>
+            <returns>Verctor.</returns>
+        </member>
+        <member name="P:SharpTL.ITLVectorSerializer.ItemsType">
+            <summary>
+                Type of vector's items.
+            </summary>
+        </member>
+        <member name="P:SharpTL.Serializers.TLBytesSerializer.IsDurovMode">
+            <summary>
+                In Durov mode Bytes is an alias for String type hence both serializers have the same constructor numbers.
+            </summary>
+            <remarks>
+                TL bytes contructor number of normal systems: 0xEBEFB69E,
+                TL bytes constructor number of Durov's systems: 0xB5286E24 (yes, like string).
+            </remarks>
+        </member>
+        <member name="T:SharpTL.Serializers.TLSerializer`1">
+            <summary>
+                Generic TL serializer.
+            </summary>
+            <typeparam name="T">Type of a serialized object.</typeparam>
+        </member>
+        <member name="T:SharpTL.TLObjectWithCustomSerializerAttribute">
+            <summary>
+                TL object with custom serializer attribute. Used only with <see cref="T:SharpTL.TLObjectAttribute"/>
+            </summary>
+        </member>
+        <member name="P:SharpTL.TLObjectWithCustomSerializerAttribute.Type">
+            <summary>
+                Custom serializer type must be a non abstract class which implements <see cref="T:SharpTL.ITLSingleConstructorSerializer"/>.
+            </summary>
+        </member>
+        <member name="T:SharpTL.TLSerializationContext">
+            <summary>
+                TL serialization context.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLSerializationContext.#ctor(SharpTL.TLRig,SharpTL.TLStreamer)">
+            <summary>
+                Initializes a new instance of the <see cref="T:SharpTL.TLSerializationContext"/> class.
+            </summary>
+            <param name="rig">TL rig.</param>
+            <param name="streamer">TL streamer.</param>
+        </member>
+        <member name="P:SharpTL.TLSerializationContext.Rig">
+            <summary>
+                TL rig.
+            </summary>
+        </member>
+        <member name="P:SharpTL.TLSerializationContext.Streamer">
+            <summary>
+                TL streamer.
+            </summary>
+        </member>
+        <member name="T:SharpTL.Serializers.TLCustomObjectSerializer">
+            <summary>
+                Serializer for TL custom object.
+            </summary>
+        </member>
+        <member name="T:SharpTL.Serializers.TLCustomObjectSerializer.ITLPropertySerializationAgent">
+            <summary>
+                TL property serialization agent.
+            </summary>
+        </member>
+        <member name="T:SharpTL.Serializers.TLCustomObjectSerializer.TLPropertySerializationAgentBase">
+            <summary>
+                Base TL property serialization agent.
+            </summary>
+        </member>
+        <member name="T:SharpTL.Serializers.TLCustomObjectSerializer.TLObjectPropertySerializationAgent">
+            <summary>
+                TLObject property serialization agent.
+            </summary>
+        </member>
+        <member name="T:SharpTL.Serializers.TLCustomObjectSerializer.TLPropertySerializationAgent">
+            <summary>
+                Regular TL property serialization agent.
+            </summary>
+        </member>
+        <member name="T:SharpTL.Serializers.TLCustomObjectSerializer.TLVectorPropertySerializationAgent">
+            <summary>
+                TL vector property serialization agent.
+            </summary>
+        </member>
+        <member name="T:SharpTL.Serializers.TLMultiConstructorObjectSerializer">
+            <summary>
+                Serializer for TL object with multiple constructors.
+            </summary>
+        </member>
+        <member name="T:SharpTL.Serializers.TLBoxedTypeSerializerBase">
+            <summary>
+                Base serializer for TL boxed types.
+            </summary>
+        </member>
+        <member name="T:SharpTL.TLObjectAttribute">
+            <summary>
+                TL object attribute.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLObjectAttribute.#ctor(System.UInt32)">
+            <summary>
+                Initializes a new instance of the <see cref="T:SharpTL.TLObjectAttribute"/> class.
+            </summary>
+            <param name="constructorNumber">Constructor number.</param>
+        </member>
+        <member name="P:SharpTL.TLObjectAttribute.ConstructorNumber">
+            <summary>
+                Constructor number.
+            </summary>
+        </member>
+        <member name="T:SharpTL.TLPropertyAttribute">
+            <summary>
+                TL property attribute.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLPropertyAttribute.#ctor(System.UInt32)">
+            <summary>
+                Initializes a new instance of the <see cref="T:SharpTL.TLPropertyAttribute"/> class.
+            </summary>
+            <param name="order">Order in constructor.</param>
+        </member>
+        <member name="M:SharpTL.TLPropertyAttribute.#ctor(System.UInt32,SharpTL.TLSerializationMode)">
+            <summary>
+                Initializes a new instance of the <see cref="T:SharpTL.TLPropertyAttribute"/> class.
+            </summary>
+            <param name="order">Order in constructor.</param>
+            <param name="serializationModeOverride">Serialization mode override.</param>
+        </member>
+        <member name="P:SharpTL.TLPropertyAttribute.Order">
+            <summary>
+                Order in constructor.
+            </summary>
+        </member>
+        <member name="P:SharpTL.TLPropertyAttribute.SerializationModeOverride">
+            <summary>
+                Serialization mode override.
+            </summary>
+        </member>
+        <member name="T:SharpTL.TLPropertyInfo">
+            <summary>
+                TL property info.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLPropertyInfo.#ctor(System.UInt32,System.Reflection.PropertyInfo,System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Initializes a new instance of the <see cref="T:SharpTL.TLPropertyInfo"/> class.
+            </summary>
+            <param name="order">Order in constructor.</param>
+            <param name="propertyInfo">Property info.</param>
+            <param name="serializationModeOverride">Serialization mode override.</param>
+        </member>
+        <member name="P:SharpTL.TLPropertyInfo.Order">
+            <summary>
+                Order in constructor.
+            </summary>
+        </member>
+        <member name="P:SharpTL.TLPropertyInfo.PropertyInfo">
+            <summary>
+                Property info.
+            </summary>
+        </member>
+        <member name="P:SharpTL.TLPropertyInfo.SerializationModeOverride">
+            <summary>
+                Serialization mode override.
+            </summary>
+        </member>
+        <member name="T:SharpTL.TLRig">
+            <summary>
+                Type Language tooling equipment.
+            </summary>
+        </member>
+        <member name="F:SharpTL.TLRig.Default">
+            <summary>
+                Default instance of the <see cref="T:SharpTL.TLRig"/> class.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLRig.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:SharpTL.TLRig"/> class.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLRig.#ctor(System.Boolean)">
+            <summary>
+                Initializes a new instance of the <see cref="T:SharpTL.TLRig"/> class.
+            </summary>
+            <param name="isDurovMode">In Durov mode Bytes is an alias for String type hence both serializers have the same constructor numbers.</param>
+        </member>
+        <member name="M:SharpTL.TLRig.#ctor(SharpTL.TLSerializersBucket)">
+            <summary>
+                Initializes a new instance of the <see cref="T:SharpTL.TLRig"/> class.
+            </summary>
+            <param name="serializersBucket">Serializers bucket.</param>
+        </member>
+        <member name="M:SharpTL.TLRig.GetSerializer``1">
+            <summary>
+                Get serializer.
+            </summary>
+            <typeparam name="T">Object type.</typeparam>
+            <returns>Serializer.</returns>
+        </member>
+        <member name="M:SharpTL.TLRig.GetSerializerByObjectType(System.Type)">
+            <summary>
+                Get serializer by object type.
+            </summary>
+            <param name="objType">Object type.</param>
+            <returns>Serializer.</returns>
+        </member>
+        <member name="M:SharpTL.TLRig.GetSerializerByConstructorNumber(System.UInt32)">
+            <summary>
+                Get serializer by constructor number.
+            </summary>
+            <param name="constructorNumber">Constructor number.</param>
+            <returns>Serializer.</returns>
+        </member>
+        <member name="M:SharpTL.TLRig.Serialize(System.Object,System.IO.Stream,System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Serializer an object.
+            </summary>
+            <param name="obj">The object to be serialized.</param>
+            <param name="stream">Stream for writing.</param>
+            <param name="modeOverride">Serialization mode override.</param>
+        </member>
+        <member name="M:SharpTL.TLRig.Serialize(System.Object,System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Serializer an object.
+            </summary>
+            <param name="obj">The object to be serialized.</param>
+            <param name="modeOverride">Serialization mode override.</param>
+            <returns>Serialized object in array of bytes.</returns>
+        </member>
+        <member name="M:SharpTL.TLRig.Deserialize``1(System.Byte[],System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Deserialize an object.
+            </summary>
+            <typeparam name="T">Type of the object.</typeparam>
+            <param name="objBytes">Bytes for reading.</param>
+            <param name="modeOverride">Serialization mode override.</param>
+            <returns>Deserialized object.</returns>
+        </member>
+        <member name="M:SharpTL.TLRig.Deserialize``1(System.IO.Stream,System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Deserialize an object.
+            </summary>
+            <typeparam name="T">Type of the object.</typeparam>
+            <param name="stream">Stream for reading.</param>
+            <param name="modeOverride">Serialization mode override.</param>
+            <returns>Deserialized object.</returns>
+        </member>
+        <member name="M:SharpTL.TLRig.Deserialize``1(SharpTL.TLStreamer,System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Deserialize an object.
+            </summary>
+            <typeparam name="T">Type of the object.</typeparam>
+            <param name="streamer">TL streamer for reading.</param>
+            <param name="modeOverride">Serialization mode override.</param>
+            <returns>Deserialized object.</returns>
+        </member>
+        <member name="M:SharpTL.TLRig.Deserialize(System.Byte[],System.Type,System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Deserialize an object.
+            </summary>
+            <param name="objBytes">Bytes for reading.</param>
+            <param name="objType">Type of the object.</param>
+            <param name="modeOverride">Serialization mode override.</param>
+            <returns>Deserialized object.</returns>
+        </member>
+        <member name="M:SharpTL.TLRig.Deserialize(System.IO.Stream,System.Type,System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Deserialize an object.
+            </summary>
+            <param name="stream">Stream for reading.</param>
+            <param name="objType">Type of the object.</param>
+            <param name="modeOverride">Serialization mode override.</param>
+            <returns>Deserialized object.</returns>
+        </member>
+        <member name="M:SharpTL.TLRig.Deserialize(SharpTL.TLStreamer,System.Type,System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Deserialize an object.
+            </summary>
+            <param name="streamer">TL streamer for reading.</param>
+            <param name="objType">Type of the object.</param>
+            <param name="modeOverride">Serialization mode override.</param>
+            <returns>Deserialized object.</returns>
+        </member>
+        <member name="M:SharpTL.TLRig.Deserialize(System.Byte[])">
+            <summary>
+                Deserialize an object.
+            </summary>
+            <param name="objBytes">Bytes for reading.</param>
+            <returns>Deserialized object.</returns>
+        </member>
+        <member name="M:SharpTL.TLRig.Deserialize(System.IO.Stream)">
+            <summary>
+                Deserialize an object.
+            </summary>
+            <param name="stream">Stream for reading.</param>
+            <returns>Deserialized object.</returns>
+        </member>
+        <member name="M:SharpTL.TLRig.Deserialize(SharpTL.TLStreamer)">
+            <summary>
+                Deserialize an object.
+            </summary>
+            <param name="streamer">TL streamer for reading.</param>
+            <returns>Deserialized object.</returns>
+        </member>
+        <member name="M:SharpTL.TLRig.PrepareSerializer``1">
+            <summary>
+                Prepare serializer for an object type.
+            </summary>
+            <typeparam name="T">Type of an object.</typeparam>
+        </member>
+        <member name="M:SharpTL.TLRig.PrepareSerializersForAllTLObjectsInAssembly(System.Reflection.Assembly)">
+            <summary>
+                Prepare serializers for all TL objects in an assembly.
+                For all objects with TLObject attribute should be prepared a serializer.
+            </summary>
+            <param name="assembly">Assembly with TL objects.</param>
+        </member>
+        <member name="M:SharpTL.TLRig.Serialize(System.Object,SharpTL.TLSerializationContext,System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Serialize an object.
+            </summary>
+            <param name="obj">The object.</param>
+            <param name="context">TL serialization context.</param>
+            <param name="modeOverride">Serialization mode override.</param>
+            <exception cref="T:SharpTL.TLSerializerNotFoundException">When serializer not found.</exception>
+        </member>
+        <member name="M:SharpTL.TLRig.Deserialize(SharpTL.TLSerializationContext)">
+            <summary>
+                Deserialize an object from TL serialization context.
+            </summary>
+            <remarks>
+                Constructor number for the object is automatically determined by reading the first number from the streamer,
+                hence object within the context streamer must be serialized as boxed type.
+            </remarks>
+            <param name="context">TL serialization context.</param>
+            <returns>Deserialized object.</returns>
+            <exception cref="T:SharpTL.TLSerializerNotFoundException">When serializer not found.</exception>
+        </member>
+        <member name="M:SharpTL.TLRig.Deserialize``1(SharpTL.TLSerializationContext,System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Deserialize an object from TL serialization context.
+            </summary>
+            <typeparam name="T">Type of the object.</typeparam>
+            <param name="context">TL serialization context.</param>
+            <param name="modeOverride">Serialization mode override.</param>
+            <returns>Deserialized object.</returns>
+        </member>
+        <member name="M:SharpTL.TLRig.Deserialize(System.Type,SharpTL.TLSerializationContext,System.Nullable{SharpTL.TLSerializationMode})">
+            <summary>
+                Deserialize an object from TL serialization context.
+            </summary>
+            <param name="objType">Type of the object.</param>
+            <param name="context">TL serialization context.</param>
+            <param name="modeOverride">Serialization mode override.</param>
+            <returns>Deserialized object.</returns>
+            <exception cref="T:SharpTL.TLSerializerNotFoundException">When serializer not found.</exception>
+        </member>
+        <member name="T:SharpTL.TLSerializationMode">
+            <summary>
+                Mode of TL serialization.
+            </summary>
+        </member>
+        <member name="T:SharpTL.TLStreamer">
+            <summary>
+                TL streamer.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:SharpTL.TLStreamer"/> class with underlying <see cref="T:System.IO.MemoryStream"/>.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.#ctor(System.Int32)">
+            <summary>
+                Initializes a new instance of the <see cref="T:SharpTL.TLStreamer"/> class with underlying <see cref="T:System.IO.MemoryStream"/> with
+                an expandable capacity initialized as specified.
+            </summary>
+            <param name="capacity">The initial size of the internal <see cref="T:System.IO.MemoryStream"/> array in bytes.</param>
+        </member>
+        <member name="M:SharpTL.TLStreamer.#ctor(System.Byte[])">
+            <summary>
+                Initializes a new instance of the <see cref="T:SharpTL.TLStreamer"/> class.
+            </summary>
+            <param name="bytes">Bytes.</param>
+        </member>
+        <member name="M:SharpTL.TLStreamer.#ctor(System.IO.Stream,System.Boolean)">
+            <summary>
+                Initializes a new instance of the <see cref="T:SharpTL.TLStreamer"/> class.
+            </summary>
+            <param name="stream">Stream.</param>
+            <param name="leaveOpen">Leave underlying stream open.</param>
+        </member>
+        <member name="M:SharpTL.TLStreamer.Syncronized">
+            <summary>
+                Create syncronized wrapper around the <see cref="T:SharpTL.TLStreamer"/>.
+            </summary>
+            <returns>Syncronized wrapper.</returns>
+        </member>
+        <member name="M:SharpTL.TLStreamer.Syncronized(SharpTL.TLStreamer)">
+            <summary>
+                Create syncronized wrapper around the <see cref="T:SharpTL.TLStreamer"/>.
+            </summary>
+            <param name="streamer">TL streamer.</param>
+            <returns>Syncronized wrapper.</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:SharpTL.TLStreamer.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+                Reads bytes to a buffer.
+            </summary>
+            <param name="buffer">Buffer.</param>
+            <param name="offset">Offset.</param>
+            <param name="count">Count.</param>
+        </member>
+        <member name="M:SharpTL.TLStreamer.SetLength(System.Int64)">
+            <summary>
+                Sets the length of the underlying stream.
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:SharpTL.TLStreamer.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+                Writes bytes from a buffer.
+            </summary>
+            <param name="buffer">Buffer.</param>
+            <param name="offset">Offset.</param>
+            <param name="count">Count.</param>
+        </member>
+        <member name="M:SharpTL.TLStreamer.Write(System.Byte[])">
+            <summary>
+                Writes all bytes from a buffer.
+            </summary>
+            <param name="buffer">Buffer.</param>
+        </member>
+        <member name="M:SharpTL.TLStreamer.Write(System.ArraySegment{System.Byte})">
+            <summary>
+                Writes all bytes from an array segment.
+            </summary>
+            <param name="buffer">Array segment.</param>
+        </member>
+        <member name="M:SharpTL.TLStreamer.ReadBytes(System.Int32)">
+            <summary>
+                Reads an array of bytes.
+            </summary>
+            <param name="count">Count to read.</param>
+            <returns>Array of bytes.</returns>
+        </member>
+        <member name="M:SharpTL.TLStreamer.ReadByte">
+            <summary>
+                Reads byte.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+                Sets the position within the underlying stream.
+            </summary>
+            <param name="offset"></param>
+            <param name="origin"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SharpTL.TLStreamer.WriteByte(System.Byte)">
+            <summary>
+                Writes a byte to the current position in the stream and advances the position within the stream by one byte.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.ReadInt32">
+            <summary>
+                Reads 32-bit signed integer.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.WriteInt32(System.Int32)">
+            <summary>
+                Writes 32-bit signed integer.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.ReadUInt32">
+            <summary>
+                Reads 32-bit unsigned integer.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.WriteUInt32(System.UInt32)">
+            <summary>
+                Writes 32-bit unsigned integer.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.ReadInt64">
+            <summary>
+                Reads 64-bit signed integer.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.WriteInt64(System.Int64)">
+            <summary>
+                Writes 64-bit signed integer.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.ReadUInt64">
+            <summary>
+                Reads 64-bit unsigned integer.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.WriteUInt64(System.UInt64)">
+            <summary>
+                Writes 64-bit unsigned integer.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.ReadDouble">
+            <summary>
+                Reads double.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.WriteDouble(System.Double)">
+            <summary>
+                Writes double.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.ReadInt128">
+            <summary>
+                Reads a 128-bit signed integer.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.WriteInt128(BigMath.Int128)">
+            <summary>
+                Writes a 128-bit signed integer.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.ReadInt256">
+            <summary>
+                Reads a 256-bit signed integer.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.WriteInt256(BigMath.Int256)">
+            <summary>
+                Writes a 256-bit signed integer.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.ReadTLBytes">
+            <summary>
+                Reads a bunch of bytes formated as described in TL.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.WriteTLBytes(System.Byte[])">
+            <summary>
+                Writes a bunch of bytes formated as described in TL.
+            </summary>
+            <param name="bytes">Array of bytes.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">When array size exceeds </exception>
+        </member>
+        <member name="M:SharpTL.TLStreamer.WriteRandomDataTillEnd">
+            <summary>
+                Writes random data till the end of an underlying stream.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.WriteRandomData(System.Int32)">
+            <summary>
+                Writes random data of an underlying stream.
+            </summary>
+            <param name="length">Length of the data to write.</param>
+        </member>
+        <member name="M:SharpTL.TLStreamer.Flush">
+            <summary>
+                Clears all buffers for the underlying stream and causes any buffered data to be written to the underlying device.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.PushPosition">
+            <summary>
+                Push current position to a stack.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.PopPosition">
+            <summary>
+                Pop current position from a stack.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLStreamer.FillBuffer(System.Int32)">
+            <summary>
+                Fills the internal buffer with the specified number of bytes read from the stream.
+            </summary>
+            <param name="numBytes">The number of bytes to be read. </param>
+            <exception cref="T:System.IO.EndOfStreamException">
+                The end of the stream is reached before <paramref name="numBytes" />
+                could be read.
+            </exception>
+            <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+                Requested <paramref name="numBytes" /> is larger than the
+                internal buffer size.
+            </exception>
+        </member>
+        <member name="M:SharpTL.TLStreamer.Dispose(System.Boolean)">
+            <summary>
+                Dispose.
+            </summary>
+            <param name="disposing">
+                A call to Dispose(false) should only clean up native resources. A call to Dispose(true) should clean up both
+                managed and native resources.
+            </param>
+        </member>
+        <member name="P:SharpTL.TLStreamer.BaseStream">
+            <summary>
+                Underlying stream.
+            </summary>
+        </member>
+        <member name="P:SharpTL.TLStreamer.StreamAsLittleEndian">
+            <summary>
+                Stream as little-endian.
+            </summary>
+        </member>
+        <member name="P:SharpTL.TLStreamer.Position">
+            <summary>
+                Current position.
+            </summary>
+        </member>
+        <member name="P:SharpTL.TLStreamer.BytesTillEnd">
+            <summary>
+                Bytes till end.
+            </summary>
+        </member>
+        <member name="P:SharpTL.TLStreamer.CanWrite">
+            <summary>
+                Sets a value indicating whether the underlying stream supports writing.
+            </summary>
+        </member>
+        <member name="P:SharpTL.TLStreamer.Length">
+            <summary>
+                Length.
+            </summary>
+        </member>
+        <member name="P:SharpTL.TLStreamer.CanRead">
+            <summary>
+                Gets a value indicating whether the underlying stream supports reading.
+            </summary>
+        </member>
+        <member name="P:SharpTL.TLStreamer.CanSeek">
+            <summary>
+                Gets a value indicating whether the underlying stream supports seeking.
+            </summary>
+        </member>
+        <member name="T:SharpTL.TLStreamer.TLSyncStreamer">
+            <summary>
+                Thread-safe TL streamer.
+            </summary>
+        </member>
+        <member name="T:SharpTL.TLTypeAttribute">
+            <summary>
+                TL type attribute.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLTypeAttribute.#ctor(System.Type[])">
+            <summary>
+                Initializes a new instance of the <see cref="T:SharpTL.TLTypeAttribute"/> class.
+            </summary>
+            <param name="constructorTypes">Constructor types.</param>
+        </member>
+        <member name="P:SharpTL.TLTypeAttribute.ConstructorTypes">
+            <summary>
+                Constructor types.
+            </summary>
+        </member>
+        <member name="P:SharpTL.TLTypeAttribute.TypeNumber">
+            <summary>
+                Type number.
+            </summary>
+        </member>
+        <member name="T:SharpTL.TLSerializersBucket">
+            <summary>
+                TL serialization bucket.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLSerializersBucket.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SharpTL.TLSerializersBucket"/> class.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLSerializersBucket.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SharpTL.TLSerializersBucket"/> class.
+            </summary>
+            <param name="isDurovMode">In Durov mode Bytes is an alias for String type hence both serializers have the same constructor numbers.</param>
+        </member>
+        <member name="M:SharpTL.TLSerializersBucket.Contains(System.Type)">
+            <summary>
+                Does the bucket contain serializer for a type.
+            </summary>
+            <param name="type">Type of an object.</param>
+        </member>
+        <member name="M:SharpTL.TLSerializersBucket.Add(SharpTL.ITLSerializer)">
+            <summary>
+                Adds serializer.
+            </summary>
+            <param name="serializer">TL serializer.</param>
+        </member>
+        <member name="M:SharpTL.TLSerializersBucket.PrepareSerializer``1">
+            <summary>
+                Prepare serializer for an object type.
+            </summary>
+            <typeparam name="T">Type of an object.</typeparam>
+        </member>
+        <member name="M:SharpTL.TLSerializersBucket.PrepareSerializer(System.Type)">
+            <summary>
+                Prepare serializer for an object type.
+            </summary>
+            <param name="objType">Object type.</param>
+        </member>
+        <member name="P:SharpTL.TLSerializersBucket.Item(System.Type)">
+            <summary>
+                Get TL serializer for an object type.
+            </summary>
+            <param name="type">Type of the object.</param>
+            <returns>TL serializer.</returns>
+        </member>
+        <member name="P:SharpTL.TLSerializersBucket.Item(System.UInt32)">
+            <summary>
+                Get TL serializer for a constructor number.
+            </summary>
+            <param name="constructorNumber">Constructor number.</param>
+            <returns>TL serializer.</returns>
+        </member>
+        <member name="T:SharpTL.TLVectorAttribute">
+            <summary>
+                TL vector attribute.
+            </summary>
+        </member>
+        <member name="M:SharpTL.TLVectorAttribute.#ctor(SharpTL.TLSerializationMode)">
+            <summary>
+                Initializes a new instance of the <see cref="T:SharpTL.TLVectorAttribute"/> class.
+            </summary>
+            <param name="itemsModeOverride">Vector items serialization mode override.</param>
+        </member>
+        <member name="P:SharpTL.TLVectorAttribute.ItemsModeOverride">
+            <summary>
+                Vector items serialization mode override.
+            </summary>
+        </member>
+    </members>
+</doc>

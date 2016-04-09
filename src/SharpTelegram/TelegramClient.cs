@@ -16,20 +16,20 @@ namespace SharpTelegram
     public class TelegramClient : IDisposable
     {
         private readonly TelegramAppInfo _appInfo;
-        private readonly ITransportConfig _transportConfig;
+        private readonly IClientTransportConfig _transportConfig;
         private Config _config;
-        private IMTProtoConnection _connection;
+        private IMTProtoClientConnection _connection;
         private bool _isDisposed;
         private ITelegramAsyncMethods _methods;
 
-        public TelegramClient(ITransportConfig transportConfig,
+        public TelegramClient(IClientTransportConfig transportConfig,
             ConnectionConfig connectionConfig,
             TelegramAppInfo appInfo,
-            IMTProtoBuilder builder = null)
+            IMTProtoClientBuilder builder)
         {
             if (builder == null)
             {
-                builder = MTProtoBuilder.Default;
+                builder = MTProtoClientBuilder.Default;
             }
 
             _transportConfig = transportConfig;
